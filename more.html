@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>海量点</title>
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>
+    <style>
+        html, body, #container {
+            height: 100%;
+            width: 100%;
+        }
+
+
+    </style>
+    <script src="111.js"></script>
+</head>
+<body>
+<div id="container" class="map" tabindex="0"></div>
+<div id="rader" ></div>
+<div class="input-card">
+    <h4>海量点效果切换</h4>
+    <div class="input-item">
+        <input type="button" class="btn" value="单一图标" onclick='setStyle(0)'/>
+        <input type="button" class="btn" value="多个图标" onclick='setStyle(1)'/>
+    </div>
+</div>
+<script type="text/javascript" src='first.js'></script>
+//数据来源JS
+<script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=1.4.10&key=7d02ffc079247c43c73c5ada5addb018"></script>
+
+<script type="text/javascript">
+    var map = new AMap.Map('container', {
+        mapStyle: 'amap://styles/twilight',
+        zoom: 11,
+        center: [117.202785, 39.122316]
+    });
+
+    var style = [{
+        url: 'https://a.amap.com/jsapi_demos/static/images/mass0.png',
+        anchor: new AMap.Pixel(6, 6),
+        size: new AMap.Size(9, 9)
+    }, {
+        url: 'https://a.amap.com/jsapi_demos/static/images/mass1.png',
+        anchor: new AMap.Pixel(4, 4),
+        size: new AMap.Size(7, 7)
+    }, {
+        url: 'https://a.amap.com/jsapi_demos/static/images/mass2.png',
+        anchor: new AMap.Pixel(3, 3),
+        size: new AMap.Size(5, 5)
+    }
+    ];
+    //设置点的形状
+
+    var mass = new AMap.MassMarks(ifo, {
+        opacity: 1.0,
+        zIndex: 111,
+        cursor: 'pointer',
+        style: style
+    });
+
+    var marker = new AMap.Marker({content: ' ', map: map});
+    mass.on('mouseover', function (e) {
+
+        marker.setPosition(e.data.lnglat);
+
+        marker.setLabel({content: [e.data.name,e.data.time]})
+
+    });
+    //要显示的数据，即参数
+
+    mass.setMap(map);
+
+    function setStyle(multiIcon) {
+        if (multiIcon) {
+            mass.setStyle(style);
+        } else {
+            mass.setStyle(style[2]);
+        }
+    }
+</script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+<!--记住一定一定要加http://-->
+<script src="https://webapi.amap.com/loca?v=1.2.0&key=c2a3395af85f0f113707284620c4d76b"></script>
+<script src="https://webapi.amap.com/maps?v=1.4.10&key=c2a3395af85f0f113707284620c4d76b"></script>
+<!--<script src="https://a.amap.com/Loca/static/mock/districts.js"></script>-->
+<script type="text/javascript">
+    var amap = new AMap.Map('gaodemap', {
+        center:[117.197674,39.09116],
+        zoom:11
+    });
+
+
+    //获取信息
+    var data = { "name": a, "sex": "2","a":"10","b":"13","商家地址":"address"}
+    //构建基础雷达图
+    function getRadar() {
+        //使用数组获取信息
+        var  value=[];
+        value.push(data.name,data.sex,data.a,data.b);
+        var dom = document.getElementById("rader");
+        var myChart = echarts.init(dom);
+        var app = {};
+        option = null;
+        option = {
+            title: {
+            },
+            tooltip: {},
+            legend: {
+                data: a
+            },
+            radar: {
+                // shape: 'circle',
+                name: {
+                    textStyle: {
+                        color: '#fff',
+                        backgroundColor: '#999',
+                        borderRadius: 3,
+                        padding: [3, 5]
+                    }
+                },
+                indicator: [
+                    {name: '评价', max: 5},
+                    {name: '评价数', max: 3000},
+                    {name: '起送价', max: 50},
+                    {name: '配送费', max: 50},
+                ],
+                radius: 80,
+                center: ['50%', '55%']
+            },
+            series: [{
+                name: '不管你叫什么名字好了',
+                type: 'radar',
+                // areaStyle: {normal: {}},
+                data: [
+                    {
+                        value: value,
+                        name: '商家name',
+                        label: {
+                            normal: {
+                                show: true,
+                                formatter: function (params) {
+                                    return params.value;
+                                }
+                            }
+                        }
+                    }
+                ]
+            }]
+        };
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+        document.getElementById("address").innerHTML="商家地址"+":"+data.商家地址;
+        document.getElementById("time").innerHTML="营业时间"+":"+"time";
+    }
+</script>
+</body>
+</html>
